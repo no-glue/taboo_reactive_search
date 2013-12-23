@@ -1,6 +1,6 @@
 # TabooReactiveSearch
 
-TODO: Write a gem description
+    Taboo reactive search to solve travelling salesman.
 
 ## Installation
 
@@ -18,7 +18,12 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+    TabooReactiveSearch::TabooReactiveSearch.new.search([[565,575],[25,185]], 50, 100, 1.3, 0.9)[:cost]
+
+    50 - max candidates
+    100 - max iterations
+    1.3 - increase
+    0.9 - drop
 
 ## Contributing
 
