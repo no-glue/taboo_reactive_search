@@ -79,7 +79,7 @@ module TabooReactiveSearch
 
     # same
     def equivalent(el1, el2)
-      el1.each {|e| return false if !el2.include?(e)}
+      el1.each {|e| return false if el2.nil? || !el2.include?(e)}
       true
     end
 
@@ -131,8 +131,9 @@ module TabooReactiveSearch
       current[:cost] = cost(current[:vector], cities)
       best = current
       taboo_list, prohib_period = [], 1
+      visited_list, avg_size, last_change = [], 1, 0
       max_iter.times do |iter|
-        candidate_entry = get_candidate_entry()
+        candidate_entry = get_candidate_entry(visited_list, current[:vector])
         if !candidate_entry.nil?
           repetition_interval = iter - candidate_entry[:iter]
           candidate_entry[:iter] = iter
@@ -150,10 +151,10 @@ module TabooReactiveSearch
           last_change = iter
         end
         candidates = Array.new(max_cand) do |i|
-          generate_candidate(current, cities)
+          get_candidate(current, cities)
         end
         candidates.sort!{|x, y| x.first[:cost] <=> y.first[:cost] }
-        tabu, admis = sort_neighborhood(candidates, taboo_list, prohib_period, iter)
+        taboo, admis = sort_neighborhood(candidates, taboo_list, prohib_period, iter)
         if admis.size < 2
           prohib_period = cities.size - 2
           last_change = iter
